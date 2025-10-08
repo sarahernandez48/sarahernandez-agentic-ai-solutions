@@ -45,7 +45,7 @@ def query_ollama(prompt, model="llama3"):
     except requests.exceptions.RequestException as e:
         return f"Error: Could not connect to Ollama. Is it running? Details: {e}"
 
-def query_openai(prompt, model="gpt-3.5-turbo"):
+def query_openai(prompt, model="gpt-5-mini"):
     """Sends a prompt to the OpenAI API."""
     print(f"\n--- Querying OpenAI ({model}) ---")
     if not OPENAI_API_KEY:
@@ -74,7 +74,7 @@ def query_anthropic(prompt, model="claude-3-haiku-20240307"):
     except Exception as e:
         return f"Error querying Anthropic: {e}"
 
-def query_gemini(prompt, model="gemini-pro"):
+def query_gemini(prompt, model="gemini-2.5-flash"):
     """Sends a prompt to the Google Gemini API."""
     print(f"\n--- Querying Gemini ({model}) ---")
     if not GEMINI_API_KEY:
@@ -87,9 +87,9 @@ def query_gemini(prompt, model="gemini-pro"):
         return f"Error querying Gemini: {e}"
 
 DEFAULT_PROMPTS = {
-    "Simple": "Explain photosynthesis.",
-    "Role": "You are a biology professor. Explain photosynthesis to a high school student.",
-    "Chain-of-Thought": """Explain photosynthesis step-by-step, start with inputs (what plants need) and end with outputs.""",
+    "Simple": "Explain photosynthesis. The output has to be in JSON",
+    "Role": "You are a biology professor. Explain photosynthesis to a high school student. The output has to be in JSON",
+    "Chain-of-Thought": """Explain photosynthesis step-by-step, start with inputs (what plants need) and end with outputs. The output has to be in JSON""",
 }
 
 
@@ -138,9 +138,9 @@ if __name__ == "__main__":
         "Ollama (Mistral)": lambda p: query_ollama(p, model="mistral"),
     }
     cloud_models: Dict[str, Callable[[str], str]] = {
-        "OpenAI (GPT-3.5)": query_openai,
+        "OpenAI (gpt-5-mini)": query_openai,
         "Anthropic (Claude 3 Haiku)": query_anthropic,
-        "Google (Gemini Pro)": query_gemini,
+        "Google (Gemini 2.5 flash)": query_gemini,
     }
 
     if args.models == "local":

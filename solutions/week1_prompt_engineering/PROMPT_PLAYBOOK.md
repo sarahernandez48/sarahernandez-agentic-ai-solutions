@@ -20,16 +20,29 @@ hallucination, verbosity, shallow, drift (format), persona-loss, json-break, con
 
 ## Results Table (Populate During Lab)
 | Prompt Pattern | Example Used | Model | Adherence (1–5) | Reasoning (1–5) | Style (1–5) | Format (1–5) | Failure Modes | Notes | Reuse? (Y/N) |
-|----------------|--------------|-------|------------------|-----------------|-------------|--------------|---------------|-------|--------------|
+|-------|------|------|-------|-------|-------|-------|-------|-------|-------|
+|Simple|Explain photosynthesis|Llama3|5|5|5|3|shallow|Explains basic concepts, however does not explain the process|Y|
+|Simple|Explain photosynthesis|Mistral|3|5|5|3|shallow|The explanation is very technical, little natural language|N|
+|Simple|Explain photosynthesis|OpenAI (gpt-5-mini)|5|5|5|5|constraint-fail|More detail about the process, the explanation is more clear|Y|
+|Simple|Explain photosynthesis|Gemini(gemini-2.5-flash)|5|5|5|5|---|The examples were provided in natural language to understand the concept, the process is much more detailed, it explains the phosynthesis formula|Y|
+|Role|You are a biology professor. Explain photosynthesis to a high school student.|Llama3|3|5|3|5|The information is concise, however the role is not taken into account|-------|Y|
+|Role|You are a biology professor. Explain photosynthesis to a high school student.|Mistral|3|3|5|3|shallow|The information is also concise, the role was taken into account, without technical details.|N|
+|Role|You are a biology professor. Explain photosynthesis to a high school student.|OpenAI (gpt-5-mini)|5|5|3|5|information in greater detail, the process is explained in detail|-------|Y|
+|Role|You are a biology professor. Explain photosynthesis to a high school student.|Gemini(gemini-2.5-flash)|5|5|5|5|The role is taken into account, explanation with practical exercise, as teachers do, detailed information|-------|Y|
+|Chain-of-Thought|Explain photosynthesis step-by-step, start with inputs (what plants need) and end with outputs.|Llama3|5|5|5|5|The inputs and the step-by-step explanation are great, explaining all the variables involved and the results.|-------|Y|
+|Chain-of-Thought|Explain photosynthesis step-by-step, start with inputs (what plants need) and end with outputs.|Mistral|5|5|5|5|shallow|The explanation of the inputs is good, however the results are very concise.|Y|
+|Chain-of-Thought|Explain photosynthesis step-by-step, start with inputs (what plants need) and end with outputs.|OpenAI (gpt-5-mini)|3|3|3|3|drift (format)|The inputs are not understood, the role of each variable is not explained correctly, and the results are not consistent.|N|
+|Chain-of-Thought|Explain photosynthesis step-by-step, start with inputs (what plants need) and end with outputs.|Gemini(gemini-2.5-flash)|5|5|5|5|The inputs are explained in detail, concepts are clear, the step-by-step process is clear, and the results are consistent.|-------|Y|
+
 
 ## Model Summary (After Initial Pass)
 | Capability | Best Model(s) | Evidence Snippet | Notes |
 |------------|---------------|------------------|-------|
-| Explanatory Clarity | | | |
-| Chain-of-Thought | | | |
-| JSON Adherence | | | |
-| Persona Control | | | |
-| Instruction Strictness | | | |
+| Explanatory Clarity |Gemini(gemini-2.5-flash) | 2.  Water (H2O): Source: Absorbed from the soil by the plant's roots. How it travels:Transported up to the leaves through specialized vascular tissues called **xylem**. **Role:** Provides the electrons and protons (hydrogen ions, H+) needed for the light-dependent reactions, and is the source of the oxygen gas released during photosynthesis. |Technical concepts explained in detail, in natural language, and easy to understand |
+| Chain-of-Thought |Llama3 | 1. **Light absorption**: Chlorophyll molecules absorb light energy from the sun, exciting electrons and initiating the photosynthetic process. 2. **Water splitting**: Plants use water (H2O) to produce hydrogen ions (H+) and oxygen (O2). This process is called photolysis. * H2O → 2H+ + O2 | The step-by-step instructions are concise and explained in a simple, easy-to-understand way.|
+| JSON Adherence | Gemini(gemini-2.5-flash), Llama3, OpenAI (gpt-5-mini), Mistral |  | All models generated results correctly in JSON format without parsing issues.|
+| Persona Control | Mistral and Gemini(gemini-2.5-flash)| Mistral: Photosynthesis! It's one of the coolest processes in biology, and it's essential for life on Earth. So, let me break it down for you in a way that's easy to understand. What is photosynthesis? Photosynthesis is the process by which plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of glucose (a type of sugar). This process occurs in specialized organelles called chloroplasts within plant cells.How does it work?|These two models better took into account the role, taking into account techniques that a teacher uses to make himself understood. |
+| Instruction Strictness | Gemini(gemini-2.5-flash) | 2) Water splitting (photolysis) and O2 release (thylakoid lumen), - The oxygen-evolving complex associated with PSII splits water: H2O → 2 H+ + 2 e− + 1/2 O2.- Electrons from water replace those lost by PSII; O2 is produced and released to the atmosphere.| This model seems less friendly to me, more direct, and goes to the specific point. |
 
 ## Insight Log
 Record notable surprises, regressions, or improvements.
